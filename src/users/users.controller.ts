@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,13 +18,13 @@ export class UsersController {
         return this.usersService.findOne(id);
     }
 
-    @Post() // localhost:3000/users/ Body has to have type like here example user that is empty object 
-    create(@Body() user: CreateUserDto){
+    @Post() 
+    create(@Body(ValidationPipe) user: CreateUserDto){
         return this.usersService.create(user);
     }
 
     @Patch(':id') // localhost:3000/users/1 (1 is exampleId & Body becouse we need that id to find a user and body to update any information) 
-    update(@Param('id', ParseIntPipe) id: number, @Body() userUpdate: UpdateUserDto){
+    update(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) userUpdate: UpdateUserDto){
         return this.usersService.update(id, userUpdate);
     }
 
